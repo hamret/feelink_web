@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feelink Vision Accessibility</title>
+  <title>Feelink Vision</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -87,54 +87,10 @@
       style="min-width: 0"
     ></main>
 
-    <!-- Right Fixed AI Voice Chat Box -->
-    <aside
-      id="voice-chat-box"
-      class="w-80 border-l border-[var(--border-default)] bg-[var(--bg-subtle)] p-4 flex flex-col min-h-screen"
-      style="min-width: 20rem"
-    >
-      <h2 class="text-2xl font-bold mb-3 text-[var(--text-primary)]">AI Voice Chat</h2>
-      <div
-        id="chat-history"
-        class="flex-1 overflow-y-auto mb-4 pr-1 text-[var(--text-primary)] text-base space-y-2"
-        style="min-height: 300px; max-height: calc(100vh - 220px)"
-      ></div>
-      <div id="spectrum" class="flex items-end gap-1 h-7 mb-2 hidden">
-        <div class="bar w-2 bg-blue-400 rounded"></div>
-        <div class="bar w-2 bg-blue-400 rounded"></div>
-        <div class="bar w-2 bg-blue-400 rounded"></div>
-        <div class="bar w-2 bg-blue-400 rounded"></div>
-        <div class="bar w-2 bg-blue-400 rounded"></div>
-      </div>
-      <div class="flex gap-2">
-        <input
-          id="chat-input"
-          type="text"
-          placeholder="Type or say something..."
-          autocomplete="off"
-          class="flex-1 rounded border border-[var(--border-default)] px-3 py-2 text-[var(--text-primary)] bg-[var(--bg-default)] focus:outline-none"
-        />
-        <button
-          id="mic-btn"
-          aria-label="Start voice input"
-          class="btn-secondary flex items-center gap-1 px-4 py-2 rounded"
-          type="button"
-        >
-          <svg
-            class="icon w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" x2="12" y1="19" y2="22" />
-          </svg>
-        </button>
-        <button id="chat-send-btn" class="btn-primary px-4 py-2 rounded font-semibold" type="button">Send</button>
-      </div>
+    <!-- 오른쪽 결과 패널 -->
+    <aside id="result-side-panel" class="result-side-panel hidden">
+      <h3 class="text-xl font-bold mb-3">Analysis Result</h3>
+      <div id="analyze-desc-side" class="mb-4"></div>
     </aside>
   </div>
 
@@ -184,8 +140,6 @@
       >
         <h3 class="text-xl font-bold mb-3">Analysis Result</h3>
         <div id="analyze-desc" class="mb-4"></div>
-        <button id="detail-btn" class="btn-primary mb-2">Show Details</button>
-        <div id="detail-desc" class="mt-2"></div>
       </div>
     </div>
   </template>
@@ -221,8 +175,6 @@
       >
         <h3 class="text-xl font-bold mb-3">Analysis Result</h3>
         <div id="analyze-desc-cam" class="mb-4"></div>
-        <button id="detail-btn-cam" class="btn-primary mb-2">Show Details</button>
-        <div id="detail-desc-cam" class="mt-2"></div>
       </div>
     </div>
   </template>
