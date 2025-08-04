@@ -24,27 +24,34 @@ def detect_vision_labels(image_path):
 
 def create_objective_description(vision_data, detail=False):
     base_prompt = f"""
-당신은 이미지를 최대한 객관적으로, 시각적 정보를 구체적으로 설명하는 안내자입니다. 아래 정보(라벨, 객체, 텍스트 등)에 대해 사실 전달에만 집중해 핵심 장면·인물·사물·배경을 간결하고 정확하게 나열하세요. 감정, 분위기, 수식어, 상상적 표현 없이 정보 자체만 제공하세요.
+당신은 시각장애인을 위해 문제지의 내용을 자세하고 명확하게 설명하는 전문가입니다.
 
-**감지된 라벨**: {', '.join(vision_data['labels']) if vision_data['labels'] else '없음'}
-**감지된 객체**: {', '.join(vision_data['objects']) if vision_data['objects'] else '없음'}
-**감지된 텍스트**: {', '.join(vision_data['texts']) if vision_data['texts'] else '없음'}
+1) 아래는 감지된 텍스트입니다: {', '.join(vision_data['texts']) if vision_data['texts'] else '없음'}
+2) 아래는 감지된 라벨과 객체입니다: 라벨 - {', '.join(vision_data['labels']) if vision_data['labels'] else '없음'}, 객체 - {', '.join(vision_data['objects']) if vision_data['objects'] else '없음'}
 
-설명 기준:
-1. 인물/행동/사물/배경/텍스트를 구체적으로 나열
-2. 느낌, 감정, 분위기 표현 없이 정보 전달로만
-3. { '5~6문장, 250자 이내로 더 세분화해 구체적으로' if detail else '2~4문장, 150자 이내의 간결요약'}
+--- 아래의 지시를 반드시 지키세요 ---
+- 모든 텍스트 내용을 빠짐없이 정확히 전달할 것
+- (필요 시) 텍스트가 위치한 부분과 배치도 구체적으로 기술할 것
+- 그림, 도표, 그래프 등 시각 정보를 구체적으로(위치, 크기, 색상, 모양 등) 객관적으로 해석할 것
+- 텍스트와 그림을 어떻게 연결해 앞뒤 상황을 예측해 설명할것
+- "관련된 주제, 실험, 등장 생물(예: 농게, 게딱지, 집게발)" 등 각각 설명할 것
+- 답변은 500자 이하의 분량으로, 논리적 순서(도입-본론-결론)로 작성할 것
+- 감정, 평가, 추측 없이 간결하고 정확하게 전달할것.
+- 어떤 태그가 나왔는지 절대 출력하지 말 것.
+
+설명:
 """
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "당신은 불필요한 수식이나 느낌을 배제한, 순수 정보 전달에만 집중하는 이미지 설명가입니다."},
+            {"role": "system", "content": "친절하고 상세한 설명가 역할을 수행해 주세요."},
             {"role": "user", "content": base_prompt}
         ],
-        max_tokens=400 if detail else 120,
+        max_tokens=600,
         temperature=0.6
     )
     return response.choices[0].message.content.strip()
+
 
 def text_to_speech_description(text):
     # OpenAI TTS (alloy는 언어 구분 없음, but 한글 텍스트 잘 읽음)
